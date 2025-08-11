@@ -119,3 +119,39 @@ export const sendMessage = async (req: AuthenticatedRequest, res: Response) => {
     res.status(500).json({ success: false });
   }
 };
+
+export const deleteMessage = async(req:Request, res:Response)=>{
+
+   const { msgId } = req.params;
+
+    // Check if message exists before deleting
+    const message = await Message.findById(msgId);
+    if (!message) {
+      return res.status(404).json({ success: false, message: "Message not found" });
+    }
+
+    // Delete the message
+    await Message.findByIdAndDelete(msgId);
+
+    // Find recipient's socket ID (assuming you store by user ID)
+    const recipientSocketId = userSocketMap[message.receiverId.toString()];
+    if (recipientSocketId) {
+      io.to(recipientSocketId).emit("deletedMessage", { msgId });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "Message deleted successfully",
+      msgId
+    });
+
+}
+
+// export const editMessage = async(req:Request, res:Response)=>{
+//   try {
+//     const id = req.params.id
+//     const 
+//   } catch (error) {
+    
+//   }
+// }

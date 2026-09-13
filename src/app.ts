@@ -9,6 +9,7 @@ import { Server } from "socket.io";
 
 dotenv.config();
 
+
 const app = express();
 const server = http.createServer(app);
 
@@ -36,8 +37,10 @@ socket.on('disconnect', (userId)=>{
 })
 })
 
+
+
 app.use(cors(
-  { origin: "http://localhost:5173",
+  { origin:process.env.CLIENT_URL,
   credentials: true,}
 ));
 app.use(express.json({limit: '4mb'}));
@@ -46,7 +49,8 @@ app.use('/api/messages', messageRoute)
 const PORT = process.env.PORT || 8000;
 
 
+
 server.listen(PORT, async() => {
   console.log(`Server is running on port ${PORT}`);
-  await connect()
+  await connect();
 });

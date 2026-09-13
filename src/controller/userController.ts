@@ -14,7 +14,6 @@ interface AuthenticatedRequest extends Request {
 
 export const Register = async(req:Request, res:Response) => {
     const { email, password, fullName, profilePicture, bio } = req.body;
-
     try {
         if (!email || !password || !fullName) {
             return res.status(400).json({ message: "Please fill all fields" });
@@ -41,6 +40,7 @@ export const Register = async(req:Request, res:Response) => {
         token
       });
     } catch (error) {
+        console.log(error.message)
         res.status(500).json({
             success: false,
             message:`Internal server error: ${error.message}`
@@ -65,6 +65,7 @@ try {
         token
     })
 } catch (error) {
+    console.log(error.message)
     res.status(500).json({
         success: false,
         message: `Internal server error: ${error.message}`

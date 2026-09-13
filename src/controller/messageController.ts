@@ -50,7 +50,6 @@ export const getUserForSideBar = async (
 };
 
 //get all messages for selected User by id
-
 export const getMessages = async (req: AuthenticatedRequest, res: Response) => {
   try {
     const { selectedUserId } = req.params;
